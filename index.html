@@ -11,7 +11,8 @@
   <meta property="og:image" content="./images/tour.jpg">
   <meta property="og:description" content="엔데믹 시대의 투어는 투어리스트">
   <link rel="shortcut icon" href="./favicon.png" type="image/x-icon">
-  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/reset.css">  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <title>Tourist in Tour</title>
   <style>
     /* 기본 */
@@ -45,10 +46,14 @@
 
       padding:36px 0;
       background:rgba(0,0,0,0.2);
+      transition:background 0.3s;
+    }
+    .header.active{
+      background:#31353d;
     }
     .header::after{
       content:'';
-      display:block;
+      display:none;
       position:absolute;
       left:0;
       right:0;
@@ -58,6 +63,20 @@
       opacity:0;
       transition:0.3s;
     }
+    .header.after::after{
+      display:block;
+      animation: show-back 0.3s 0.1s forwards;
+    }
+
+    @keyframes show-back {
+      0%{
+        opacity:0;
+      }
+      100%{
+        opacity:0.6;
+      }
+    }
+
     .header .container{
       display:flex;
       flex-flow:row nowrap;
@@ -175,9 +194,18 @@
       z-index:1000;
       width:200px;
     }
+    .sub-nav02{
+      transform:translate(-20px);
+    }
+    .sub-nav03{
+      transform:translate(-40px);
+    }    
+    .sub-nav04{
+      transform:translate(-10px);
+    }   
     .sub-nav li:first-child{
       margin-right:12px;
-    }    
+    }
     .slider{
       
     }
@@ -207,6 +235,7 @@
     @media (min-width:800px){
       .header{
         padding:10px 0 36px;
+        background:rgba(0,0,0,0.2) !important;
       }
       .logo{
         order:1;
@@ -216,7 +245,7 @@
         display:none;
       }
       .nav{
-        display:block;
+        display:block !important;
         order:2;
         width:455px;
         background:transparent;
@@ -237,6 +266,9 @@
         padding:0;
         background:none !important;
         text-align:right;
+      }
+      .sub-nav{
+        display:flex;
       }
       
     }
@@ -259,11 +291,11 @@
 </head>
 <body>
   <section class="wrap">
-    <header class="header">
+    <header class="header"  id="header" >
       <div class="container">
         <h1 class="main-tit logo"><a href="./index.html"><span>tourist in tour</span><img src="./images/logo.png" alt="logo"></a></h1>
-        <div class="btn-nav"><span>네비버튼</span></div>
-        <nav class="nav">
+        <div class="btn-nav" id="btn-nav"><span>네비버튼</span></div>
+        <nav class="nav" id="nav">
           <ul class="member">
             <li><a href="#">로그인</a></li>
             <li><a href="#">회원가입</a></li>
@@ -271,28 +303,28 @@
           <ul class="main-nav">
             <li>
               <a href="#">여행정보</a>
-              <ul class="sub-nav">
+              <ul class="sub-nav sub-nav01">
                 <li><a href="#">국내</a></li>
                 <li><a href="#">해외</a></li>
               </ul>
             </li>
             <li>
               <a href="#">고객센터</a>
-              <ul class="sub-nav">
+              <ul class="sub-nav sub-nav02">
                 <li><a href="#">공지사항</a></li>
                 <li><a href="#">문의하기</a></li>
               </ul>
             </li>
             <li>
               <a href="#">상품투어</a>
-              <ul class="sub-nav">
+              <ul class="sub-nav sub-nav03">
                 <li><a href="#">프로그램 소개</a></li>
                 <li><a href="#">여행자료</a></li>
               </ul>
             </li>
             <li>
               <a href="#">티켓/가이드</a>
-              <ul class="sub-nav">
+              <ul class="sub-nav sub-nav04">
                 <li><a href="#">항공</a></li>
                 <li><a href="#">호텔</a></li>
               </ul>
@@ -336,5 +368,34 @@
       </div>
     </footer>
   </section>
+  <script>
+    $('#btn-nav').click(function(){
+      $('#header').toggleClass('active');
+      $('#nav').slideToggle(300);
+    })    
+    
+    $('.main-nav>li').mouseenter(function(){
+      $('.sub-nav').hide();
+      $(this).children('.sub-nav').css({
+        display:'flex',
+      });
+      $('#header').addClass('after')
+    })
+
+    $('#header').mouseleave(function(){
+      fnSubNav();
+    })
+
+    $(window).resize(function(){
+      let winWidth = $(this).width();
+      if(winWidth<800){
+        fnSubNav();
+      }
+    })
+    function fnSubNav(){
+      $('.sub-nav').hide();
+      $('#header').removeClass('after')
+    }
+  </script>
 </body>
 </html>
