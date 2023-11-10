@@ -371,30 +371,42 @@
   <script>
     $('#btn-nav').click(function(){
       $('#header').toggleClass('active');
-      $('#nav').slideToggle(300);
+      $('#nav').slideToggle(300);      
     })    
     
     $('.main-nav>li').mouseenter(function(){
-      $('.sub-nav').hide();
-      $(this).children('.sub-nav').css({
-        display:'flex',
-      });
-      $('#header').addClass('after')
+      let winWidth = $(window).width();
+      if(winWidth>=800){
+        fnSubShow(this);
+      }else{
+        fnSubHide();
+      }
     })
 
     $('#header').mouseleave(function(){
-      fnSubNav();
+      fnSubHide();
     })
 
     $(window).resize(function(){
       let winWidth = $(this).width();
       if(winWidth<800){
-        fnSubNav();
+        fnSubHide();
       }
     })
-    function fnSubNav(){
+    //서브감추기
+    function fnSubHide(){
       $('.sub-nav').hide();
       $('#header').removeClass('after')
+    }
+
+
+    //서브보이기
+    function fnSubShow(self){
+      $('.sub-nav').hide();
+      $(self).children('.sub-nav').css({
+        display:'flex',
+      });
+      $('#header').addClass('after')
     }
   </script>
 </body>
